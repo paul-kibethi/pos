@@ -128,6 +128,7 @@ STATICFILES_DIRS = (
     # location of your application, should not be public web accessible 
     './static',
 )
+STATIC_ROOT = "http://paulnk.pythonanywhere.com/static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
