@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--w(dug*va_megpa25w$gmv8o6+f8!fg_*m1^u$)z25pab0hicm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['http://paulnk.pythonanywhere.com/']
+ALLOWED_HOSTS = ['http://paulnk.pythonanywhere.com/', 'paulnk.pythonanywhere.com']
 
 
 # Application definition
@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'pos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pos',
+        'NAME': 'PaulNK$pos',
         'USER': 'PaulNK',
-        'PASSWORD': '2@Kibepaul',
+        'PASSWORD': '2@kibepaul',
         'HOST': 'PaulNK.mysql.pythonanywhere-services.com',
         'PORT': 3306,
     }
@@ -124,11 +124,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    # location of your application, should not be public web accessible 
-    './static',
-)
-STATIC_ROOT = "http://paulnk.pythonanywhere.com/static"
+# STATICFILES_DIRS = (
+#     # location of your application, should not be public web accessible
+#     './static',
+# )
+STATIC_ROOT = "/home/PaulNK/pos/pos/static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
