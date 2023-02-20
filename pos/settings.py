@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--w(dug*va_megpa25w$gmv8o6+f8!fg_*m1^u$)z25pab0hicm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://paulnk.pythonanywhere.com/', 'paulnk.pythonanywhere.com']
+ALLOWED_HOSTS = ['http://paulnk.pythonanywhere.com/', 'paulnk.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
@@ -75,14 +75,26 @@ WSGI_APPLICATION = 'pos.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'PaulNK$pos',
+#         'USER': 'PaulNK',
+#         'PASSWORD': '2@kibepaul',
+#         'HOST': 'PaulNK.mysql.pythonanywhere-services.com',
+#         'PORT': 3306,
+#     }
+# }
+
+# development database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'PaulNK$pos',
-        'USER': 'PaulNK',
-        'PASSWORD': '2@kibepaul',
-        'HOST': 'PaulNK.mysql.pythonanywhere-services.com',
-        'PORT': 3306,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'pos',
+        'USER': 'postgres',
+        'PASSWORD': 'kibepaul',
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
 }
 
@@ -123,12 +135,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
+
+# STATIC_ROOT = "static_files"
+
+# -------------------static files deployment--------------------
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     # location of your application, should not be public web accessible
-#     './static',
-# )
-STATIC_ROOT = "/home/PaulNK/pos/pos/static"
+STATICFILES_DIRS = [
+    BASE_DIR, 'static',
+]
+STATIC_ROOT = "/home/PaulNK/pos/pos/static_files"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
