@@ -144,9 +144,9 @@ USE_TZ = True
 
 # -------------------static files deployment--------------------
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR, 'static',
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR, 'static',
+# ]
 STATIC_ROOT = "/home/PaulNK/pos/pos/static_files"
 
 # Default primary key field type

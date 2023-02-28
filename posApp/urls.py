@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.home, name="home-page"),
     path('login', auth_views.LoginView.as_view(template_name = 'posApp/login.html',redirect_authenticated_user=True), name="login"),
     path('userlogin', views.login_user, name="login-user"),
+    path('admin-home/', views.admin_home, name='admin_home'),
     path('logout', views.logoutuser, name="logout"),
     path('category', views.category, name="category-page"),
     path('manage_category', views.manage_category, name="manage_category-page"),

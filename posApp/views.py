@@ -7,14 +7,16 @@ from django.db.models import Count, Sum
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import redirect
 import json, sys
 from datetime import date, datetime
 
 # Login
+
 def login_user(request):
     logout(request)
-    resp = {"status":'failed','msg':''}
+    resp = {"status": 'failed', 'msg': ''}
     username = ''
     password = ''
     if request.POST:
@@ -25,12 +27,34 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                resp['status']='success'
+                if user.is_staff:  # check if the user is a staff member
+                    return redirect('admin_home')  # redirect to admin home
+                resp['status'] = 'success'
             else:
                 resp['msg'] = "Incorrect username or password"
         else:
             resp['msg'] = "Incorrect username or password"
-    return HttpResponse(json.dumps(resp),content_type='application/json')
+    return HttpResponse(json.dumps(resp), content_type='application/json')
+
+# def login_user(request):
+#     logout(request)
+#     resp = {"status":'failed','msg':''}
+#     username = ''
+#     password = ''
+#     if request.POST:
+#         username = request.POST['username']
+#         password = request.POST['password']
+#
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 resp['status']='success'
+#             else:
+#                 resp['msg'] = "Incorrect username or password"
+#         else:
+#             resp['msg'] = "Incorrect username or password"
+#     return HttpResponse(json.dumps(resp),content_type='application/json')
 
 #Logout
 def logoutuser(request):
@@ -38,6 +62,36 @@ def logoutuser(request):
     return redirect('/')
 
 # Create your views here.
+
+@ staff_member_required
+@login_required
+def admin_home(request):
+    # now = datetime.now()
+    # current_year = now.strftime("%Y")
+    # current_month = now.strftime("%m")
+    # current_day = now.strftime("%d")
+    # categories = len(Category.objects.all())
+    # products = len(Products.objects.all())
+    # transaction = len(Sales.objects.filter(
+    #     date_added__year=current_year,
+    #     date_added__month=current_month,
+    #     date_added__day=current_day
+    # ))
+    # today_sales = Sales.objects.filter(
+    #     date_added__year=current_year,
+    #     date_added__month=current_month,
+    #     date_added__day=current_day
+    # ).all()
+    # total_sales = sum(today_sales.values_list('grand_total', flat=True))
+    # context = {
+    #     'page_title': 'Home',
+    #     'categories': categories,
+    #     'products': products,
+    #     'transaction': transaction,
+    #     'total_sales': total_sales,
+    # }
+    return render(request, 'posApp/admin_home.html') #context)
+
 @login_required
 def home(request):
     now = datetime.now()
@@ -74,6 +128,7 @@ def about(request):
     return render(request, 'posApp/about.html',context)
 
 #Categories
+@staff_member_required
 @login_required
 def category(request):
     category_list = Category.objects.all()
@@ -83,6 +138,8 @@ def category(request):
         'category':category_list,
     }
     return render(request, 'posApp/category.html',context)
+
+@staff_member_required
 @login_required
 def manage_category(request):
     category = {}
@@ -99,6 +156,7 @@ def manage_category(request):
     }
     return render(request, 'posApp/manage_category.html',context)
 
+@staff_member_required
 @login_required
 def save_category(request):
     data =  request.POST
@@ -115,6 +173,7 @@ def save_category(request):
         resp['status'] = 'failed'
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+@staff_member_required
 @login_required
 def delete_category(request):
     data =  request.POST
@@ -128,6 +187,7 @@ def delete_category(request):
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 # Products
+@staff_member_required
 @login_required
 def products(request):
     product_list = Products.objects.all()
@@ -136,6 +196,8 @@ def products(request):
         'products':product_list,
     }
     return render(request, 'posApp/products.html',context)
+
+@staff_member_required
 @login_required
 def manage_products(request):
     product = {}
@@ -159,6 +221,8 @@ def test(request):
         'categories' : categories
     }
     return render(request, 'posApp/test.html',context)
+
+@staff_member_required
 @login_required
 def save_product(request):
     data =  request.POST
@@ -186,6 +250,8 @@ def save_product(request):
             resp['status'] = 'failed'
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
+@staff_member_required
 @login_required
 def delete_product(request):
     data =  request.POST
@@ -197,6 +263,8 @@ def delete_product(request):
     except:
         resp['status'] = 'failed'
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
 @login_required
 def pos(request):
     products = Products.objects.filter(status = 1)
@@ -257,6 +325,8 @@ def save_pos(request):
         print("Unexpected error:", sys.exc_info()[0])
     return HttpResponse(json.dumps(resp),content_type="application/json")
 
+
+@staff_member_required
 @login_required
 def salesList(request):
     sales = Sales.objects.all()
@@ -299,6 +369,8 @@ def receipt(request):
     return render(request, 'posApp/receipt.html',context)
     # return HttpResponse('')
 
+
+@staff_member_required
 @login_required
 def delete_sale(request):
     resp = {'status':'failed', 'msg':''}

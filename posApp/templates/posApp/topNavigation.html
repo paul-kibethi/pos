@@ -17,6 +17,7 @@
                 </button>
                 <div class="mdc-menu mdc-menu-surface" tabindex="-1">
                     <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                        {% if user.is_authenticated and user.is_staff %}
                         <li class="mdc-list-item" role="menuitem">
                             <a class="text-dark" href="{% url 'redirect-admin' %}">
                                 <div class="item-thumbnail item-thumbnail-icon-only">
@@ -29,6 +30,7 @@
                                 </div>
                             </a>
                         </li>
+                        {% endif %}
                         <li class="mdc-list-item" role="menuitem">
                             <a class="text-dark" href="{% url 'logout' %}">
                                 <div class="item-thumbnail item-thumbnail-icon-only">
