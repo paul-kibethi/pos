@@ -14,31 +14,9 @@ from datetime import date, datetime
 
 # Login
 
-def login_user(request):
-    logout(request)
-    resp = {"status": 'failed', 'msg': ''}
-    username = ''
-    password = ''
-    if request.POST:
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                if user.is_staff:  # check if the user is a staff member
-                    return redirect('admin_home')  # redirect to admin home
-                resp['status'] = 'success'
-            else:
-                resp['msg'] = "Incorrect username or password"
-        else:
-            resp['msg'] = "Incorrect username or password"
-    return HttpResponse(json.dumps(resp), content_type='application/json')
-
 # def login_user(request):
 #     logout(request)
-#     resp = {"status":'failed','msg':''}
+#     resp = {"status": 'failed', 'msg': ''}
 #     username = ''
 #     password = ''
 #     if request.POST:
@@ -49,12 +27,34 @@ def login_user(request):
 #         if user is not None:
 #             if user.is_active:
 #                 login(request, user)
-#                 resp['status']='success'
+#                 if user.is_staff:  # check if the user is a staff member
+#                     return redirect('admin_home')  # redirect to admin home
+#                 resp['status'] = 'success'
 #             else:
 #                 resp['msg'] = "Incorrect username or password"
 #         else:
 #             resp['msg'] = "Incorrect username or password"
-#     return HttpResponse(json.dumps(resp),content_type='application/json')
+#     return HttpResponse(json.dumps(resp), content_type='application/json')
+
+def login_user(request):
+    logout(request)
+    resp = {"status":'failed','msg':''}
+    username = ''
+    password = ''
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                resp['status']='success'
+            else:
+                resp['msg'] = "Incorrect username or password"
+        else:
+            resp['msg'] = "Incorrect username or password"
+    return HttpResponse(json.dumps(resp),content_type='application/json')
 
 #Logout
 def logoutuser(request):
